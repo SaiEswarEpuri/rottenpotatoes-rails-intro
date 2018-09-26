@@ -11,12 +11,18 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings=Movie.all_ratings
+    @true_ratings=params[:ratings] ? params[:ratings].keys : @all_ratings
+    @true_ratings.each do |x|
+      params[x]=true
+    end
     if params[:sort]
-      @movies=Movie.order(params[:sort])
-    else
-      @movies=Movie.all 
+      @movies = Movie.order(params[:sort])
+    else 
+      @movies = Movie.where(:rating => @true_ratings)
     end
   end
+
 
   def new
     # default: render 'new' template
@@ -45,5 +51,11 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-
+  def check
+    if params[:ratings]
+      params[:ratings].keys
+    else
+      @all_ratings
+    end
+  end
 end
