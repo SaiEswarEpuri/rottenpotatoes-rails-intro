@@ -11,16 +11,10 @@ class MoviesController < ApplicationController
   end
 
   def index
-    if ((!params.has_key?(:sort))&&(!params.has_key?(:ratings)))
-      @redirect_check=true
-    end
    @all_ratings=Movie.all_ratings
     @sort=params[:sort] || session[:sort]
     @true_hash = params[:ratings] || session[:ratings]
     @true_ratings=@true_hash ? @true_hash.keys : @all_ratings
-    if(@redirect_check)
-      redirect_to movies_path(:sort => @sort, :ratings => @true_hash)
-    end 
     @true_ratings.each do |x|
       params[x]=true
     end
