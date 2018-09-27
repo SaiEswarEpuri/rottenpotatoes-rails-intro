@@ -1,5 +1,5 @@
 class Movie < ActiveRecord::Base
     def self.all_ratings
-     self.uniq.pluck(:rating)
+     self.order(:rating).select(:rating).map(&:rating).uniq
     end
 end
